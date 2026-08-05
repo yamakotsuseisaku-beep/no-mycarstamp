@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>のって スタンプ カード｜山口市 ノーマイカー強化月間</title>
+
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="のってスタンプ">
+<meta name="theme-color" content="#213A5E">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23213A5E'/><text x='50' y='68' font-size='55' text-anchor='middle'>🚌</text></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23213A5E'/><text x='50' y='68' font-size='55' text-anchor='middle'>🚌</text></svg>">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{
+  --cream:#FBF3E4;
+  --cream-deep:#F1E9D8;
+  --cream2:#F7F1E3;
+  --navy:#213A5E;
+  --navy2:#2E4C78;
+  --marigold:#F0A93C;
+  --marigold-deep:#D98F22;
+  --green:#3C8A5D;
+  --stamp-red:#C1272D;
+  --tan-line:#D8CBB0;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:"Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+  background:var(--cream);
+  color:var(--navy);
+  -webkit-font-smoothing:antialiased;
+  /* アプリ風の操作感（不要なテキスト選択やタップ時のハイライトを無効化） */
+  -webkit-touch-callout:none;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+}
+.wrap{max-width:640px;margin:0 auto;padding-bottom:56px;}
+
+/* ---------- Hero ---------- */
+.hero{
+  background:linear-gradient(180deg,var(--navy) 0%,var(--navy2) 78%,var(--marigold) 78%,var(--marigold) 100%);
+  padding:28px 20px 36px;
+  color:#fff;
+}
+.hero h1{
+  margin:0 0 6px;
+  font-size:26px;
+  letter-spacing:.04em;
+  text-align:center;
+  text-shadow:0 2px 0 rgba(0,0,0,.12);
+}
+.hero .sub{
+  text-align:center;
+  font-size:13px;
+  color:var(--marigold);
+  font-weight:700;
+  letter-spacing:.03em;
+}
+.hero .period{
+  text-align:center;
+  font-size:12.5px;
+  color:#e9f0f7;
+  margin-top:2px;
+}
+.hero-scene{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-top:16px;padding:0 8px;
+}
+.hero-scene svg{display:block;width:110px;height:54px;}
+
+/* ---------- Sections ---------- */
+.card{
+  background:#fff;
+  margin:16px 16px 0;
+  border-radius:16px;
+  border:1px solid var(--tan-line);
+  padding:18px;
+}
+.section-title{
+  font-size:15px;
+  font-weight:700;
+  color:var(--navy);
+  margin:0 0 10px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.section-title .dot{
+  width:8px;height:8px;border-radius:50%;background:var(--marigold);display:inline-block;
+}
+
+/* ---------- Name field ---------- */
+.name-row{display:flex;align-items:center;gap:10px;}
+.name-row label{font-size:13px;font-weight:700;color:var(--navy);white-space:nowrap;}
+.name-row input{
+  flex:1;border:1px solid var(--tan-line);border-radius:8px;padding:9px 10px;
+  font-size:14px;font-family:inherit;color:var(--navy);background:var(--cream2);
+  user-select:auto; /* 入力欄はテキスト選択可能にする */
+}
+.name-row input:focus{outline:2px solid var(--marigold);}
+.name-hint{font-size:11px;color:#a89a78;margin-top:6px;}
+
+/* ---------- Stamp button ---------- */
+.stamp-cta{text-align:center;padding:6px 4px 2px;}
+.stamp-btn{
+  appearance:none;border:none;cursor:pointer;
+  background:var(--marigold);
+  color:var(--navy);
+  font-weight:700;
+  font-size:16px;
+  padding:16px 26px;
+  border-radius:999px;
+  box-shadow:0 4px 0 var(--marigold-deep);
+  width:100%;
+  transition:transform .08s ease;
+  font-family:inherit;
+}
+.stamp-btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--marigold-deep);}
+.stamp-btn:disabled{
+  background:#e6ddc9;color:#a89a78;box-shadow:0 4px 0 #d8cbaf;cursor:not-allowed;
+}
+.stamp-note{font-size:12px;color:var(--navy2);text-align:center;margin-top:10px;line-height:1.6;}
+
+.stats-row{display:flex;gap:10px;margin-top:14px;}
+.stat{flex:1;background:var(--cream-deep);border-radius:12px;padding:12px 8px;text-align:center;}
+.stat .num{font-size:22px;font-weight:700;color:var(--stamp-red);}
+.stat .label{font-size:11px;color:var(--navy2);margin-top:2px;}
+
+/* ---------- Calendar ---------- */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:4px;}
+.cal-head{
+  text-align:center;font-size:11px;font-weight:700;color:#fff;
+  background:var(--navy2);border-radius:6px;padding:4px 0;
+}
+.cal-head.sun{background:#8a2f34;}
+.cal-head.sat{background:#264b7a;}
+.cal-cell{
+  position:relative;
+  aspect-ratio:1/1.28;
+  border:1px solid var(--tan-line);
+  border-radius:8px;
+  background:#fff;
+  padding:4px 2px 0;
+  cursor:pointer;
+  overflow:hidden;
+}
+.cal-cell.blank{visibility:hidden;pointer-events:none;}
+.cal-cell .d{font-size:11px;font-weight:700;color:var(--navy);line-height:1;}
+.cal-cell.sun .d{color:var(--stamp-red);}
+.cal-cell.sat .d{color:var(--navy2);}
+.cal-cell .stampmark{
+  position:absolute;top:2px;bottom:16px;left:2px;right:2px;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+.cal-cell .stampmark svg{width:70%;height:70%;animation:stampPress .28s cubic-bezier(.2,1.6,.4,1) both;}
+@keyframes stampPress{
+  0%{opacity:0;transform:scale(1.9) rotate(-16deg);}
+  60%{opacity:1;}
+  100%{opacity:1;transform:scale(1) rotate(-8deg);}
+}
+.cal-cell.today{outline:2px solid var(--marigold-deep);outline-offset:-2px;}
+.cal-cell .tag{
+  position:absolute;left:1px;right:1px;bottom:1px;
+  font-size:6.2px;line-height:1.15;background:var(--marigold);color:var(--navy);
+  border-radius:3px;padding:1px 1px;text-align:center;font-weight:700;
+}
+
+.legend{
+  margin-top:12px;font-size:11.5px;color:var(--navy2);line-height:1.8;
+  background:var(--cream-deep);border-radius:10px;padding:10px 12px;
+}
+.legend div{margin:2px 0;}
+
+/* ---------- Events ---------- */
+.event{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px dashed var(--tan-line);}
+.event:last-child{border-bottom:none;}
+.event .badge{
+  flex:0 0 auto;background:var(--navy);color:#fff;font-weight:700;font-size:12px;
+  border-radius:8px;padding:6px 9px;text-align:center;min-width:44px;
+}
+.event .badge .m{display:block;font-size:9px;color:var(--marigold);}
+.event .body .name{font-weight:700;font-size:14px;color:var(--navy);}
+.event .body .place{font-size:12px;color:var(--navy2);margin-top:2px;}
+
+/* ---------- Finish box ---------- */
+.finish-box{background:#FFF7E8;border:1.6px solid var(--marigold);border-radius:14px;padding:16px;text-align:center;}
+.finish-box p{font-size:12.5px;color:var(--navy2);line-height:1.7;margin:8px 0 0;}
+.finish-stamp-btn{
+  appearance:none;cursor:pointer;font-family:inherit;
+  width:78px;height:78px;border-radius:50%;
+  border:2.4px dashed var(--stamp-red);background:#FFFDF6;
+  display:flex;align-items:center;justify-content:center;margin:10px auto 0;
+  color:var(--stamp-red);font-weight:700;font-size:11px;line-height:1.3;
+}
+.finish-stamp-btn.done{
+  border:2.4px solid var(--stamp-red);
+  color:var(--stamp-red);
+}
+.finish-sub{margin-top:8px;}
+.finish-sub button{
+  background:none;border:none;color:#b3a486;font-size:10.5px;text-decoration:underline;
+  cursor:pointer;font-family:inherit;
+}
+
+/* ---------- Lottery / QR ---------- */
+.qr-wrap{display:flex;gap:16px;align-items:center;}
+#qrcode{flex:0 0 auto;background:#fff;padding:6px;border-radius:8px;border:1px solid var(--tan-line);}
+.qr-text{flex:1;font-size:12.5px;color:var(--navy2);line-height:1.7;user-select:auto;}
+.link-btn{
+  display:inline-block;margin-top:10px;background:var(--navy);color:#fff;text-decoration:none;
+  font-size:12.5px;font-weight:700;padding:9px 16px;border-radius:999px;
+}
+
+footer{text-align:center;font-size:11px;color:#a89a78;margin-top:22px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="hero">
+    <h1>のって スタンプ カード</h1>
+    <div class="sub">山口市 ノーマイカー強化月間</div>
+    <div class="period">2026年10月1日（木）〜10月31日（土）</div>
+    <div class="hero-scene">
+      <svg viewBox="0 0 122 60" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="14" width="112" height="32" rx="10" fill="#F0A93C"/>
+        <rect x="12" y="20" width="96" height="13" rx="5" fill="#F7F1E3"/>
+        <line x1="36" y1="20" x2="36" y2="33" stroke="#213A5E" stroke-width="1.2"/>
+        <line x1="60" y1="20" x2="60" y2="33" stroke="#213A5E" stroke-width="1.2"/>
+        <line x1="84" y1="20" x2="84" y2="33" stroke="#213A5E" stroke-width="1.2"/>
+        <rect x="4" y="40" width="112" height="3.2" rx="1.6" fill="#213A5E"/>
+        <rect x="112" y="16" width="4" height="8" rx="2" fill="#213A5E"/>
+        <circle cx="109" cy="44" r="2.3" fill="#F7F1E3"/>
+        <circle cx="34" cy="50" r="7" fill="#213A5E"/>
+        <circle cx="34" cy="50" r="2.6" fill="#F7F1E3"/>
+        <circle cx="90" cy="50" r="7" fill="#213A5E"/>
+        <circle cx="90" cy="50" r="2.6" fill="#F7F1E3"/>
+      </svg>
+      <svg viewBox="0 0 122 60" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="14" width="118" height="32" rx="8" fill="#3C8A5D"/>
+        <rect x="10" y="20" width="102" height="13" rx="5" fill="#F7F1E3"/>
+        <line x1="34" y1="20" x2="34" y2="33" stroke="#ffffff" stroke-width="1.3" opacity=".9"/>
+        <line x1="60" y1="20" x2="60" y2="33" stroke="#ffffff" stroke-width="1.3" opacity=".9"/>
+        <line x1="86" y1="20" x2="86" y2="33" stroke="#ffffff" stroke-width="1.3" opacity=".9"/>
+        <rect x="2" y="40" width="118" height="3" rx="1.5" fill="#F7F1E3"/>
+        <line x1="64" y1="14" x2="64" y2="4" stroke="#213A5E" stroke-width="1.6"/>
+        <line x1="56" y1="4" x2="72" y2="4" stroke="#213A5E" stroke-width="1.6"/>
+        <line x1="56" y1="4" x2="60" y2="8" stroke="#213A5E" stroke-width="1.6"/>
+        <line x1="72" y1="4" x2="68" y2="8" stroke="#213A5E" stroke-width="1.6"/>
+        <circle cx="112" cy="44" r="2.3" fill="#F7F1E3"/>
+        <circle cx="26" cy="50" r="7" fill="#213A5E"/>
+        <circle cx="26" cy="50" r="2.4" fill="#F7F1E3"/>
+        <circle cx="60" cy="50" r="7" fill="#213A5E"/>
+        <circle cx="60" cy="50" r="2.4" fill="#F7F1E3"/>
+        <circle cx="94" cy="50" r="7" fill="#213A5E"/>
+        <circle cx="94" cy="50" r="2.4" fill="#F7F1E3"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title"><span class="dot"></span>なまえ</div>
+    <div class="name-row">
+      <label for="nameInput">なまえ</label>
+      <input type="text" id="nameInput" placeholder="やまぐち たろう">
+    </div>
+    <div class="name-hint">ニックネームでもOK！</div>
+  </div>
+
+  <div class="card">
+    <div class="section-title"><span class="dot"></span>今日のスタンプ</div>
+    <div class="stamp-cta">
+      <button class="stamp-btn" id="stampBtn">今日はバス・鉄道に乗った！スタンプを押す</button>
+      <div class="stamp-note" id="stampNote">カレンダーの日付をタップしても記録できるよ</div>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><div class="num" id="statCount">0</div><div class="label">スタンプ日数</div></div>
+      <div class="stat"><div class="num" id="statPoints">0</div><div class="label">ポイント</div></div>
+      <div class="stat"><div class="num">31</div><div class="label">今月の日数</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title"><span class="dot"></span>10月のカレンダー</div>
+    <div class="cal-grid" id="calHead"></div>
+    <div class="cal-grid" id="calGrid" style="margin-top:5px;"></div>
+    <div class="legend">
+      <div>★ 10/10 SLフェア（新山口駅）</div>
+      <div>★ 10/16 ポイント5倍（県内一斉ノーマイカーデー）</div>
+      <div>★ 10/18 運転士体験会・シェアサイクルオープニング</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title"><span class="dot"></span>イベント情報</div>
+    <div class="event">
+      <div class="badge">10/10<span class="m">土</span></div>
+      <div class="body"><div class="name">SLフェア</div><div class="place">会場：新山口駅</div></div>
+    </div>
+    <div class="event">
+      <div class="badge">10/16<span class="m">金</span></div>
+      <div class="body"><div class="name">県内一斉ノーマイカーデー（ポイント5倍）</div><div class="place">この日のスタンプは5ポイント！</div></div>
+    </div>
+    <div class="event">
+      <div class="badge">10/18<span class="m">日</span></div>
+      <div class="body"><div class="name">運転士体験会</div><div class="place">会場：宇部中央自動車学校</div></div>
+    </div>
+    <div class="event">
+      <div class="badge">10/18<span class="m">日</span></div>
+      <div class="body"><div class="name">シェアサイクル オープニングセレモニー</div><div class="place">会場：一の坂交流広場</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title"><span class="dot"></span>月間が終わったら</div>
+    <div class="finish-box">
+      <div>この画面を、交通政策課の窓口で見せてね！</div>
+      <button class="finish-stamp-btn" id="finishBtn">ここを押してね</button>
+      <p>職員が確認すると「がんばったね」シールが押せます。ちょっとしたプレゼントもあるよ♪</p>
+      <div class="finish-sub"><button id="finishResetBtn">解除する（要パスワード）</button></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title"><span class="dot"></span>抽選会にも応募しよう</div>
+    <div class="qr-wrap">
+      <div id="qrcode"></div>
+      <div class="qr-text">
+        QRコードを読み取るか、下のボタンから応募ページをチェックしてね。
+        <br>
+        <a class="link-btn" href="https://www.city.yamaguchi.lg.jp/soshiki/73/172315.html" target="_blank" rel="noopener">抽選会サイトを見る</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>山口市 交通政策課</footer>
+</div>
+
+<script>
+const YEAR = 2026, MONTH = 10;
+const START = new Date(2026,9,1);
+const EVENTS = {
+  10: {label:'SLフェア'},
+  16: {label:'ポイント5倍'},
+  18: {label:'体験会/シェアサイクル'}
+};
+const STAMP_KEY = 'nomycar2026-stamps';
+const NAME_KEY = 'nomycar2026-name';
+const FINISH_KEY = 'nomycar2026-finish';
+const FINISH_PASSWORD = 'nomycarenjoy2026';
+const HEADS = ['日','月','火','水','木','金','土'];
+
+let stamped = {};
+let finished = false;
+
+function dateKey(y,m,d){ return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
+
+function stampSVG(){
+  return `<svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" fill="none" stroke="#C1272D" stroke-width="3.4"/><text x="30" y="27" text-anchor="middle" font-size="9" font-weight="700" fill="#C1272D" font-family="sans-serif">のった!</text><text x="30" y="41" text-anchor="middle" font-size="11" fill="#C1272D" font-family="sans-serif">★</text></svg>`;
+}
+
+function buildCalendarHeads(){
+  const head = document.getElementById('calHead');
+  head.innerHTML = HEADS.map((h,i)=>{
+    const cls = i===0 ? 'sun' : (i===6 ? 'sat' : '');
+    return `<div class="cal-head ${cls}">${h}</div>`;
+  }).join('');
+}
+
+function buildCalendarGrid(){
+  const grid = document.getElementById('calGrid');
+  const firstDow = START.getDay();
+  const daysInMonth = 31;
+  const today = new Date();
+  const todayKey = dateKey(today.getFullYear(), today.getMonth()+1, today.getDate());
+
+  let html = '';
+  for(let i=0;i<firstDow;i++){ html += `<div class="cal-cell blank"></div>`; }
+  for(let d=1; d<=daysInMonth; d++){
+    const dow = (firstDow + d - 1) % 7;
+    const key = dateKey(YEAR,MONTH,d);
+    const dowClass = dow===0 ? 'sun' : (dow===6 ? 'sat' : '');
+    const isToday = key === todayKey ? ' today' : '';
+    const ev = EVENTS[d] ? `<div class="tag">${EVENTS[d].label}</div>` : '';
+    const mark = stamped[key] ? `<div class="stampmark">${stampSVG()}</div>` : '';
+    html += `<div class="cal-cell ${dowClass}${isToday}" data-key="${key}"><div class="d">${d}</div>${mark}${ev}</div>`;
+  }
+  grid.innerHTML = html;
+
+  grid.querySelectorAll('.cal-cell[data-key]').forEach(cell=>{
+    cell.addEventListener('click', ()=>toggleStamp(cell.dataset.key, cell));
+  });
+}
+function computeStats(){
+  const keys = Object.keys(stamped).filter(k=>stamped[k]);
+  const count = keys.length;
+  let points = 0;
+  keys.forEach(k=>{
+    const day = parseInt(k.split('-')[2],10);
+    points += (day === 16) ? 5 : 1;
+  });
+  document.getElementById('statCount').textContent = count;
+  document.getElementById('statPoints').textContent = points;
+}
+
+/* ---------- localStorage 保存・読み込み ---------- */
+function saveStamped(){
+  try{ localStorage.setItem(STAMP_KEY, JSON.stringify(stamped)); }
+  catch(e){ console.error('storage error', e); }
+}
+function loadStamped(){
+  try{
+    const res = localStorage.getItem(STAMP_KEY);
+    if(res){ stamped = JSON.parse(res); }
+  }catch(e){ stamped = {}; }
+}
+
+function toggleStamp(key, cellEl){
+  const already = !!stamped[key];
+  stamped[key] = !already;
+  saveStamped();
+  computeStats();
+  const existing = cellEl.querySelector('.stampmark');
+  if(existing) existing.remove();
+  if(!already){
+    const mark = document.createElement('div');
+    mark.className = 'stampmark';
+    mark.innerHTML = stampSVG();
+    const tagEl = cellEl.querySelector('.tag');
+    cellEl.insertBefore(mark, tagEl);
+  }
+  updateStampButton();
+}
+
+function updateStampButton(){
+  const today = new Date();
+  const inRange = today >= new Date(2026,9,1,0,0,0) && today <= new Date(2026,9,31,23,59,59);
+  const btn = document.getElementById('stampBtn');
+  const note = document.getElementById('stampNote');
+  if(!inRange){
+    btn.disabled = true;
+    btn.textContent = '対象期間は 10/1〜10/31 だよ';
+    note.textContent = '期間になったら、ここを押して毎日のスタンプを記録しよう';
+    return;
+  }
+  const key = dateKey(today.getFullYear(), today.getMonth()+1, today.getDate());
+  if(stamped[key]){
+    btn.disabled = true;
+    btn.textContent = '今日はもうスタンプ済み！';
+  } else {
+    btn.disabled = false;
+    btn.textContent = '今日はバス・鉄道に乗った！スタンプを押す';
+  }
+  btn.onclick = ()=>{
+    const cell = document.querySelector(`.cal-cell[data-key="${key}"]`);
+    if(cell) toggleStamp(key, cell);
+  };
+}
+
+/* ---------- なまえ ---------- */
+function loadName(){
+  try{
+    const res = localStorage.getItem(NAME_KEY);
+    if(res){ document.getElementById('nameInput').value = res; }
+  }catch(e){}
+}
+document.getElementById('nameInput').addEventListener('change', (e)=>{
+  try{ localStorage.setItem(NAME_KEY, e.target.value); }
+  catch(err){ console.error('name save error', err); }
+});
+
+/* ---------- がんばったねシール ---------- */
+function loadFinish(){
+  try{
+    const res = localStorage.getItem(FINISH_KEY);
+    finished = (res === '1');
+  }catch(e){ finished = false; }
+}
+function saveFinish(){
+  try{ localStorage.setItem(FINISH_KEY, finished ? '1' : '0'); }
+  catch(e){ console.error('finish save error', e); }
+}
+function renderFinishBtn(){
+  const btn = document.getElementById('finishBtn');
+  if(finished){
+    btn.classList.add('done');
+    btn.innerHTML = 'がんばったね<br>★';
+  } else {
+    btn.classList.remove('done');
+    btn.textContent = 'ここを押してね';
+  }
+}
+document.getElementById('finishBtn').addEventListener('click', ()=>{
+  if(finished) return;
+  const ok = confirm('交通政策課職員へ確認してもらってね');
+  if(!ok) return;
+  finished = true;
+  saveFinish();
+  renderFinishBtn();
+});
+document.getElementById('finishResetBtn').addEventListener('click', ()=>{
+  if(!finished){ alert('まだシールは押されていません。'); return; }
+  const pw = prompt('解除用パスワードを入力してください');
+  if(pw === null) return;
+  if(pw !== FINISH_PASSWORD){ alert('パスワードが違います。'); return; }
+  finished = false;
+  saveFinish();
+  renderFinishBtn();
+});
+
+function initQR(){
+  try{
+    new QRCode(document.getElementById('qrcode'), {
+      text: 'https://www.city.yamaguchi.lg.jp/soshiki/73/172315.html',
+      width: 96, height: 96,
+      colorDark: '#213A5E', colorLight: '#ffffff'
+    });
+  }catch(e){ console.error('QR init failed', e); }
+}
+
+(function init(){
+  buildCalendarHeads();
+  loadStamped();
+  buildCalendarGrid();
+  computeStats();
+  updateStampButton();
+  loadName();
+  loadFinish();
+  renderFinishBtn();
+  initQR();
+})();
+</script>
+</body>
+</html>
