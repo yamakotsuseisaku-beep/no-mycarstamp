@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>のって スタンプ カード｜山口市 ノーマイカー強化月間</title>
 
 <meta name="mobile-web-app-capable" content="yes">
@@ -12,7 +12,9 @@
 <meta name="theme-color" content="#213A5E">
 
 <link rel="apple-touch-icon" href="icon.png">
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23213A5E'/><text x='50' y='68' font-size='55' text-anchor='middle'>🚌</text></svg>">
+<link rel="icon" type="image/png" sizes="192x192" href="icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<link rel="manifest" href="manifest.json">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
@@ -159,7 +161,7 @@ body{
   display:flex;align-items:center;justify-content:center;
   pointer-events:none;
 }
-.cal-cell .stampmark svg{width:70%;height:70%;animation:stampPress .28s cubic-bezier(.2,1.6,.4,1) both;}
+.cal-cell .stampmark svg{width:92%;height:92%;animation:stampPress .28s cubic-bezier(.2,1.6,.4,1) both;}
 @keyframes stampPress{
   0%{opacity:0;transform:scale(1.9) rotate(-16deg);}
   60%{opacity:1;}
@@ -291,7 +293,7 @@ footer{text-align:center;font-size:11px;color:#a89a78;margin-top:22px;}
     <div class="cal-grid" id="calHead"></div>
     <div class="cal-grid" id="calGrid" style="margin-top:5px;"></div>
     <div class="legend">
-      <div>★ 10/10 SLフェア（新山口駅）</div>
+      <div>★ 10/10 <a href="https://www.city.yamaguchi.lg.jp/soshiki/73/198426.html" target="_blank" rel="noopener" style="color:var(--navy);text-decoration:underline;font-weight:inherit;">山口線トークショー</a>（小郡ふれあいセンター）</div>
       <div>★ 10/16 ポイント5倍（県内一斉ノーマイカーデー）</div>
       <div>★ 10/18 運転士体験会・シェアサイクルオープニング</div>
     </div>
@@ -301,7 +303,7 @@ footer{text-align:center;font-size:11px;color:#a89a78;margin-top:22px;}
     <div class="section-title"><span class="dot"></span>イベント情報</div>
     <div class="event">
       <div class="badge">10/10<span class="m">土</span></div>
-      <div class="body"><div class="name">SLフェア</div><div class="place">会場：新山口駅</div></div>
+      <div class="body"><div class="name"><a href="https://www.city.yamaguchi.lg.jp/soshiki/73/198426.html" target="_blank" rel="noopener" style="color:var(--navy);text-decoration:underline;font-weight:inherit;">山口線トークショー</a></div><div class="place">会場：小郡ふれあいセンター</div></div>
     </div>
     <div class="event">
       <div class="badge">10/16<span class="m">金</span></div>
@@ -318,7 +320,7 @@ footer{text-align:center;font-size:11px;color:#a89a78;margin-top:22px;}
   </div>
 
   <div class="card">
-    <div class="section-title"><span class="dot"></span>月間が終わったら</div>
+    <div class="section-title"><span class="dot"></span>月間が終わったら <span style="font-size:10px;font-weight:400;color:var(--navy2);">※11月までの期間限定</span></div>
     <div class="finish-box">
       <div>この画面を、交通政策課の窓口で見せてね！</div>
       <button class="finish-stamp-btn" id="finishBtn">ここを押してね</button>
@@ -339,14 +341,14 @@ footer{text-align:center;font-size:11px;color:#a89a78;margin-top:22px;}
     </div>
   </div>
 
-  <footer>山口市 交通政策課</footer>
+  <footer>山口市 交通政策課<br>市役所本庁舎3階（亀山町2番１号）</footer>
 </div>
 
 <script>
 const YEAR = 2026, MONTH = 10;
 const START = new Date(2026,9,1);
 const EVENTS = {
-  10: {label:'SLフェア'},
+  10: {label:'山口線トークショー'},
   16: {label:'ポイント5倍'},
   18: {label:'体験会/シェアサイクル'}
 };
@@ -362,7 +364,7 @@ let finished = false;
 function dateKey(y,m,d){ return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
 
 function stampSVG(){
-  return `<svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" fill="none" stroke="#C1272D" stroke-width="3.4"/><text x="30" y="27" text-anchor="middle" font-size="9" font-weight="700" fill="#C1272D" font-family="sans-serif">のった!</text><text x="30" y="41" text-anchor="middle" font-size="11" fill="#C1272D" font-family="sans-serif">★</text></svg>`;
+  return `<svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="27" fill="none" stroke="#C1272D" stroke-width="4"/><text x="30" y="29" text-anchor="middle" font-size="12" font-weight="700" fill="#C1272D" font-family="sans-serif">のった!</text><text x="30" y="44" text-anchor="middle" font-size="14" fill="#C1272D" font-family="sans-serif">★</text></svg>`;
 }
 
 function buildCalendarHeads(){
