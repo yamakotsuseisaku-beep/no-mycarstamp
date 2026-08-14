@@ -221,6 +221,25 @@ body{
 }
 
 footer{text-align:center;font-size:11px;color:#a89a78;margin-top:22px;}
+
+/* ---------- 山口線トレインプログレス ---------- */
+.train-stage-label{font-size:13.5px;font-weight:700;color:var(--navy);text-align:center;}
+.train-next-hint{font-size:11px;color:var(--navy2);text-align:center;margin-top:2px;}
+.rail-wrap{position:relative;height:96px;margin:16px 4px 34px;}
+.rail-line{position:absolute;left:0;right:0;top:56px;height:6px;border-radius:3px;
+  background:repeating-linear-gradient(90deg,#8a7a56 0 3px, transparent 3px 14px);}
+.rail-line::after{content:'';position:absolute;left:0;right:0;top:2px;height:2px;background:#3a3226;}
+.station{position:absolute;top:56px;transform:translate(-50%,-50%);z-index:1;}
+.station-dot{width:11px;height:11px;border-radius:50%;background:#fff;border:3px solid var(--tan-line);
+  box-sizing:border-box;transition:border-color .3s, background .3s;}
+.station-dot.reached{border-color:var(--marigold-deep);background:var(--marigold);}
+.station-label{position:absolute;top:11px;left:50%;transform:translateX(-50%);
+  font-size:7.6px;font-weight:700;color:var(--navy2);white-space:nowrap;}
+.train-icon-wrap{position:absolute;top:56px;width:64px;height:34px;z-index:2;
+  transform:translate(-50%,-98%);transition:left .8s cubic-bezier(.4,0,.2,1);}
+.train-icon-wrap svg{width:100%;height:100%;display:block;overflow:visible;}
+@keyframes steamPuff{0%{opacity:.85;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-16px) scale(1.7);}}
+.steam-puff{animation:steamPuff 1.6s ease-out infinite;transform-origin:center;}
 </style>
 </head>
 <body>
@@ -300,6 +319,16 @@ footer{text-align:center;font-size:11px;color:#a89a78;margin-top:22px;}
   </div>
 
   <div class="card">
+    <div class="section-title"><span class="dot"></span>スタンプで山口線をはしろう！</div>
+    <div class="train-stage-label" id="trainStageLabel">現在の列車：キハ48系</div>
+    <div class="train-next-hint" id="trainNextHint">あと10個でキハ187系に進化！</div>
+    <div class="rail-wrap" id="railWrap">
+      <div class="rail-line"></div>
+      <div class="train-icon-wrap" id="trainIconWrap"></div>
+    </div>
+  </div>
+
+  <div class="card">
     <div class="section-title"><span class="dot"></span>イベント情報</div>
     <div class="event">
       <div class="badge">10/10<span class="m">土</span></div>
@@ -315,16 +344,16 @@ footer{text-align:center;font-size:11px;color:#a89a78;margin-top:22px;}
     </div>
     <div class="event">
       <div class="badge">10/18<span class="m">日</span></div>
-      <div class="body"><div class="name">シェアサイクル オープニングセレモニー</div><div class="place">会場：現在調整中</div></div>
+      <div class="body"><div class="name">シェアサイクル オープニングセレモニー</div><div class="place">会場：一の坂交流広場</div></div>
     </div>
   </div>
 
   <div class="card">
     <div class="section-title"><span class="dot"></span>月間が終わったら <span style="font-size:10px;font-weight:400;color:var(--navy2);">※11月までの期間限定</span></div>
     <div class="finish-box">
-      <div>この画面を、交通政策課の窓口で見せてね！</div>
+      <div>この画面を、山口市交通政策課の窓口で見せてね！</div>
       <button class="finish-stamp-btn" id="finishBtn">ここを押してね</button>
-      <p>職員が確認すると「がんばったね」シールが押せます。ちょっとしたプレゼントもあるよ♪</p>
+      <p>職員が確認すると「がんばったね」スタンプが押せます。ちょっとしたプレゼントもあるよ♪</p>
       <div class="finish-sub"><button id="finishResetBtn">解除する（要パスワード）</button></div>
     </div>
   </div>
@@ -357,6 +386,104 @@ const NAME_KEY = 'nomycar2026-name';
 const FINISH_KEY = 'nomycar2026-finish';
 const FINISH_PASSWORD = 'nomycarenjoy2026';
 const HEADS = ['日','月','火','水','木','金','土'];
+
+/* ---------- 山口線トレインプログレス ---------- */
+const STATIONS = [
+  {name:'新山口', count:0},
+  {name:'湯田温泉', count:5},
+  {name:'山口', count:9},
+  {name:'仁保', count:12},
+  {name:'篠目', count:16},
+  {name:'長門峡', count:19},
+  {name:'地福', count:22},
+  {name:'鍋倉', count:26},
+  {name:'徳佐', count:31},
+];
+const TRAIN_MAX = 31;
+
+const KIHA48_SVG = `<svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
+<rect x="4" y="12" width="88" height="14" rx="3" fill="#F7F1E3"/>
+<rect x="4" y="26" width="88" height="12" rx="3" fill="#A13F3F"/>
+<rect x="4" y="24" width="88" height="3" fill="#213A5E"/>
+<rect x="12" y="14" width="12" height="9" rx="2" fill="#8FC1E3"/>
+<rect x="30" y="14" width="12" height="9" rx="2" fill="#8FC1E3"/>
+<rect x="48" y="14" width="12" height="9" rx="2" fill="#8FC1E3"/>
+<rect x="66" y="14" width="12" height="9" rx="2" fill="#8FC1E3"/>
+<rect x="30" y="6" width="14" height="6" rx="2" fill="#5B6472"/>
+<circle cx="88" cy="32" r="2.6" fill="#F7F1E3"/>
+<circle cx="22" cy="42" r="6" fill="#213A5E"/><circle cx="22" cy="42" r="2.2" fill="#F7F1E3"/>
+<circle cx="74" cy="42" r="6" fill="#213A5E"/><circle cx="74" cy="42" r="2.2" fill="#F7F1E3"/>
+</svg>`;
+
+const KIHA187_SVG = `<svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
+<rect x="4" y="12" width="88" height="26" rx="5" fill="#FFFFFF" stroke="#213A5E" stroke-width="1.3"/>
+<rect x="4" y="29" width="88" height="4" fill="#2E7D46"/>
+<rect x="4" y="33" width="88" height="4" fill="#E07A2C"/>
+<path d="M78,14 L88,14 C90.5,14 92,15.5 92,18 L92,26 C92,27.5 90.5,29 88,29 L78,29 Z" fill="#213A5E" opacity="0.88"/>
+<rect x="10" y="16" width="13" height="9" rx="2" fill="#213A5E" opacity="0.75"/>
+<rect x="27" y="16" width="13" height="9" rx="2" fill="#213A5E" opacity="0.75"/>
+<rect x="44" y="16" width="13" height="9" rx="2" fill="#213A5E" opacity="0.75"/>
+<rect x="61" y="16" width="13" height="9" rx="2" fill="#213A5E" opacity="0.75"/>
+<circle cx="87" cy="24.5" r="2" fill="#F2C94C"/>
+<circle cx="87" cy="17.5" r="2" fill="#F2C94C"/>
+<circle cx="22" cy="42" r="6" fill="#213A5E"/><circle cx="22" cy="42" r="2.2" fill="#F7F1E3"/>
+<circle cx="58" cy="42" r="6" fill="#213A5E"/><circle cx="58" cy="42" r="2.2" fill="#F7F1E3"/>
+</svg>`;
+
+const SL_SVG = `<svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
+<g transform="translate(100,0) scale(-1,1)">
+<circle class="steam-puff" cx="27" cy="4" r="3.4" fill="#fff" opacity="0.85"/>
+<circle class="steam-puff" cx="27" cy="4" r="3.4" fill="#fff" opacity="0.85" style="animation-delay:.5s"/>
+<rect x="26" y="4" width="7" height="12" rx="2" fill="#24272B"/>
+<rect x="18" y="14" width="62" height="18" rx="9" fill="#24272B"/>
+<rect x="18" y="20" width="62" height="3" fill="#C1272D"/>
+<rect x="76" y="6" width="18" height="26" rx="3" fill="#24272B"/>
+<rect x="80" y="10" width="10" height="9" rx="1.5" fill="#F7F1E3"/>
+<polygon points="14,32 22,32 18,24" fill="#24272B"/>
+<circle cx="34" cy="40" r="8" fill="#24272B"/><circle cx="34" cy="40" r="3.2" fill="#C1272D"/>
+<circle cx="54" cy="40" r="8" fill="#24272B"/><circle cx="54" cy="40" r="3.2" fill="#C1272D"/>
+<circle cx="72" cy="40" r="6" fill="#24272B"/><circle cx="72" cy="40" r="2.4" fill="#C1272D"/>
+</g>
+</svg>`;
+
+function trainTierFor(count){
+  if(count < 10) return {name:'キハ48系', svg: KIHA48_SVG};
+  if(count < 20) return {name:'キハ187系', svg: KIHA187_SVG};
+  return {name:'SLやまぐち号', svg: SL_SVG};
+}
+
+function buildStations(){
+  const wrap = document.getElementById('railWrap');
+  STATIONS.forEach(st=>{
+    const pct = (st.count / TRAIN_MAX) * 100;
+    const el = document.createElement('div');
+    el.className = 'station';
+    el.style.left = pct + '%';
+    el.innerHTML = `<div class="station-dot" data-count="${st.count}"></div><div class="station-label">${st.name}</div>`;
+    wrap.insertBefore(el, document.getElementById('trainIconWrap'));
+  });
+}
+
+function updateTrainProgress(count){
+  const pct = (Math.min(count, TRAIN_MAX) / TRAIN_MAX) * 100;
+  const iconWrap = document.getElementById('trainIconWrap');
+  iconWrap.style.left = pct + '%';
+  const tier = trainTierFor(count);
+  if(iconWrap.dataset.tier !== tier.name){
+    iconWrap.innerHTML = tier.svg;
+    iconWrap.dataset.tier = tier.name;
+  }
+  document.getElementById('trainStageLabel').textContent = '現在の列車：' + tier.name;
+  const hintEl = document.getElementById('trainNextHint');
+  if(count < 10){ hintEl.textContent = `あと${10-count}個でキハ187系に進化！`; }
+  else if(count < 20){ hintEl.textContent = `あと${20-count}個でSLやまぐち号に進化！`; }
+  else if(count < TRAIN_MAX){ hintEl.textContent = `あと${TRAIN_MAX-count}個で終点・徳佐駅！`; }
+  else { hintEl.textContent = '徳佐駅に到着！コンプリート！🎉'; }
+  document.querySelectorAll('.station-dot').forEach(dot=>{
+    const th = parseInt(dot.dataset.count, 10);
+    dot.classList.toggle('reached', count >= th);
+  });
+}
 
 let stamped = {};
 let finished = false;
@@ -409,6 +536,7 @@ function computeStats(){
   });
   document.getElementById('statCount').textContent = count;
   document.getElementById('statPoints').textContent = points;
+  updateTrainProgress(count);
 }
 
 /* ---------- localStorage 保存・読み込み ---------- */
@@ -528,6 +656,7 @@ function initQR(){
 
 (function init(){
   buildCalendarHeads();
+  buildStations();
   loadStamped();
   buildCalendarGrid();
   computeStats();
