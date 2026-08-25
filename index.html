@@ -318,7 +318,7 @@ footer{text-align:center;font-size:11px;color:#a89a78;margin-top:22px;}
 
   <div class="card">
     <div class="section-title"><span class="dot"></span>スタンプで山口線をはしろう！</div>
-    <div class="train-stage-label" id="trainStageLabel">現在の列車：キハ48系</div>
+    <div class="train-stage-label" id="trainStageLabel">現在の列車：キハ47系</div>
     <div class="train-next-hint" id="trainNextHint">あと10個でキハ187系に進化！</div>
     <div class="rail-wrap" id="railWrap">
       <div class="rail-line"></div>
@@ -440,7 +440,7 @@ const STATIONS = [
 ];
 const TRAIN_MAX = 31;
 
-const KIHA48_SVG = `<svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
+const KIHA47_SVG = `<svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
 <rect x="4" y="12" width="88" height="14" rx="3" fill="#F7F1E3"/>
 <rect x="4" y="26" width="88" height="12" rx="3" fill="#A13F3F"/>
 <rect x="4" y="24" width="88" height="3" fill="#213A5E"/>
@@ -486,7 +486,7 @@ const SL_SVG = `<svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
 </svg>`;
 
 function trainTierFor(count){
-  if(count < 10) return {name:'キハ48系', svg: KIHA48_SVG};
+  if(count < 10) return {name:'キハ47系', svg: KIHA47_SVG};
   if(count < 20) return {name:'キハ187系', svg: KIHA187_SVG};
   return {name:'SLやまぐち号', svg: SL_SVG};
 }
