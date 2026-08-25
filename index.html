@@ -37,7 +37,6 @@ body{
   background:var(--cream);
   color:var(--navy);
   -webkit-font-smoothing:antialiased;
-  /* アプリ風の操作感（不要なテキスト選択やタップ時のハイライトを無効化） */
   -webkit-touch-callout:none;
   -webkit-tap-highlight-color:transparent;
   user-select:none;
@@ -103,7 +102,7 @@ body{
 .name-row input{
   flex:1;border:1px solid var(--tan-line);border-radius:8px;padding:9px 10px;
   font-size:14px;font-family:inherit;color:var(--navy);background:var(--cream2);
-  user-select:auto; /* 入力欄はテキスト選択可能にする */
+  user-select:auto;
 }
 .name-row input:focus{outline:2px solid var(--marigold);}
 .name-hint{font-size:11px;color:#a89a78;margin-top:6px;}
@@ -132,7 +131,7 @@ body{
 .stats-row{display:flex;gap:10px;margin-top:14px;}
 .stat{flex:1;background:var(--cream-deep);border-radius:12px;padding:12px 8px;text-align:center;}
 .stat .num{font-size:22px;font-weight:700;color:var(--stamp-red);}
-.stat .label{font-size:11px;color:var(--navy2);margin-top:2px;}
+.stat .label{font-size:9.5px;color:var(--navy2);margin-top:2px;line-height:1.3;}
 
 /* ---------- Calendar ---------- */
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:4px;}
@@ -144,7 +143,7 @@ body{
 .cal-head.sat{background:#264b7a;}
 .cal-cell{
   position:relative;
-  aspect-ratio:1/1.28;
+  aspect-ratio:1/1.55;
   border:1px solid var(--tan-line);
   border-radius:8px;
   background:#fff;
@@ -157,21 +156,24 @@ body{
 .cal-cell.sun .d{color:var(--stamp-red);}
 .cal-cell.sat .d{color:var(--navy2);}
 .cal-cell .stampmark{
-  position:absolute;top:2px;bottom:16px;left:2px;right:2px;
+  position:absolute;top:16px;bottom:30px;left:2px;right:2px;
   display:flex;align-items:center;justify-content:center;
   pointer-events:none;
 }
-.cal-cell .stampmark svg{width:92%;height:92%;animation:stampPress .28s cubic-bezier(.2,1.6,.4,1) both;}
+.cal-cell .stampmark svg{width:88%;height:88%;animation:stampPress .28s cubic-bezier(.2,1.6,.4,1) both;}
 @keyframes stampPress{
   0%{opacity:0;transform:scale(1.9) rotate(-16deg);}
   60%{opacity:1;}
   100%{opacity:1;transform:scale(1) rotate(-8deg);}
 }
 .cal-cell.today{outline:2px solid var(--marigold-deep);outline-offset:-2px;}
-.cal-cell .tag{
+.cal-cell .tags{
   position:absolute;left:1px;right:1px;bottom:1px;
-  font-size:6.2px;line-height:1.15;background:var(--marigold);color:var(--navy);
-  border-radius:3px;padding:1px 1px;text-align:center;font-weight:700;
+  display:flex;flex-direction:column;gap:1px;
+}
+.cal-cell .tags .tag{
+  font-size:5.6px;line-height:1.1;background:var(--marigold);color:var(--navy);
+  border-radius:2px;padding:1px 1px;text-align:center;font-weight:700;
 }
 
 .legend{
@@ -295,14 +297,14 @@ footer{text-align:center;font-size:11px;color:#a89a78;margin-top:22px;}
   </div>
 
   <div class="card">
-    <div class="section-title"><span class="dot"></span>今日のスタンプ</div>
+    <div class="section-title"><span class="dot"></span>ノーマイカー参加状況</div>
     <div class="stamp-cta">
       <button class="stamp-btn" id="stampBtn">今日はバス・鉄道に乗った！スタンプを押す</button>
       <div class="stamp-note" id="stampNote">カレンダーの日付をタップしても記録できるよ</div>
     </div>
     <div class="stats-row">
       <div class="stat"><div class="num" id="statCount">0</div><div class="label">スタンプ日数</div></div>
-      <div class="stat"><div class="num" id="statPoints">0</div><div class="label">ポイント</div></div>
+      <div class="stat"><div class="num" id="statPoints">0</div><div class="label">ぶちエコアプリ獲得ポイント</div></div>
       <div class="stat"><div class="num">31</div><div class="label">今月の日数</div></div>
     </div>
   </div>
@@ -311,11 +313,7 @@ footer{text-align:center;font-size:11px;color:#a89a78;margin-top:22px;}
     <div class="section-title"><span class="dot"></span>10月のカレンダー</div>
     <div class="cal-grid" id="calHead"></div>
     <div class="cal-grid" id="calGrid" style="margin-top:5px;"></div>
-    <div class="legend">
-      <div>★ 10/10 <a href="https://www.city.yamaguchi.lg.jp/soshiki/73/198426.html" target="_blank" rel="noopener" style="color:var(--navy);text-decoration:underline;font-weight:inherit;">山口線トークショー</a>（小郡ふれあいセンター）</div>
-      <div>★ 10/16 ポイント5倍（県内一斉ノーマイカーデー）</div>
-      <div>★ 10/18 運転士体験会・シェアサイクルオープニング</div>
-    </div>
+    <div class="legend">★ カレンダーのオレンジ色のタグは、その日に開催されるイベントだよ。詳しくは下の「イベント情報」をチェック！</div>
   </div>
 
   <div class="card">
@@ -331,20 +329,56 @@ footer{text-align:center;font-size:11px;color:#a89a78;margin-top:22px;}
   <div class="card">
     <div class="section-title"><span class="dot"></span>イベント情報</div>
     <div class="event">
+      <div class="badge">10/4<span class="m">日</span></div>
+      <div class="body"><div class="name">やまぐち子どもフェスタ</div><div class="place">会場：小郡ふれあいセンター</div></div>
+    </div>
+    <div class="event">
       <div class="badge">10/10<span class="m">土</span></div>
-      <div class="body"><div class="name"><a href="https://www.city.yamaguchi.lg.jp/soshiki/73/198426.html" target="_blank" rel="noopener" style="color:var(--navy);text-decoration:underline;font-weight:inherit;">山口線トークショー</a></div><div class="place">会場：小郡ふれあいセンター</div></div>
+      <div class="body"><div class="name"><a href="https://ishinhall.com/event_post/event_post-20256/" target="_blank" rel="noopener" style="color:var(--navy);text-decoration:underline;font-weight:inherit;">小椋佳「歌紡ぎの会」</a></div><div class="place">会場：KDDI維新ホール</div></div>
+    </div>
+    <div class="event">
+      <div class="badge">10/10<span class="m">土</span></div>
+      <div class="body"><div class="name"><a href="https://www.city.yamaguchi.lg.jp/soshiki/73/198426.html" target="_blank" rel="noopener" style="color:var(--navy);text-decoration:underline;font-weight:inherit;">”鉄道BIG4”南田裕介氏によるトークショー</a></div><div class="place">会場：小郡ふれあいセンター</div></div>
+    </div>
+    <div class="event">
+      <div class="badge">10/11<span class="m">日</span></div>
+      <div class="body"><div class="name">第3回おごおり一直線まつり</div><div class="place">会場：新山口駅周辺</div></div>
+    </div>
+    <div class="event">
+      <div class="badge">10/11<span class="m">日</span></div>
+      <div class="body"><div class="name"><a href="https://nanashimachi-beerfestival.com/" target="_blank" rel="noopener" style="color:var(--navy);text-decoration:underline;font-weight:inherit;">ナナシマチBEER＆HARVEST</a></div><div class="place">会場：新山口駅北口駅前広場</div></div>
+    </div>
+    <div class="event">
+      <div class="badge">10/11<span class="m">日</span></div>
+      <div class="body"><div class="name">こどもパーク2026</div><div class="place">会場：KDDI維新ホール</div></div>
     </div>
     <div class="event">
       <div class="badge">10/16<span class="m">金</span></div>
-      <div class="body"><div class="name">県内一斉ノーマイカーデー（ポイント5倍）</div><div class="place">この日のスタンプは5ポイント！</div></div>
+      <div class="body"><div class="name">県内一斉ノーマイカーデー（ポイント5倍）</div><div class="place">この日のぶちエコアプリポイント獲得は15ポイント！</div></div>
+    </div>
+    <div class="event">
+      <div class="badge">10/17〜<span class="m">土〜</span></div>
+      <div class="body"><div class="name"><a href="https://www.ycam.jp/events/2026/improvisation/" target="_blank" rel="noopener" style="color:var(--navy);text-decoration:underline;font-weight:inherit;">大友良英＋YCAM新作展 即興！</a></div><div class="place">会場：山口情報芸術センター</div></div>
     </div>
     <div class="event">
       <div class="badge">10/18<span class="m">日</span></div>
-      <div class="body"><div class="name">運転士体験会</div><div class="place">会場：宇部中央自動車学校</div></div>
+      <div class="body"><div class="name"><a href="https://www.city.yamaguchi.lg.jp/soshiki/73/197928.html" target="_blank" rel="noopener" style="color:var(--navy);text-decoration:underline;font-weight:inherit;">バス・タクシー運転士体験会＆就業説明フェア</a></div><div class="place">会場：宇部中央自動車学校</div></div>
     </div>
     <div class="event">
       <div class="badge">10/18<span class="m">日</span></div>
-      <div class="body"><div class="name">シェアサイクル オープニングセレモニー</div><div class="place">会場：一の坂交流広場</div></div>
+      <div class="body"><div class="name">山口市シェアサイクルキックオフイベント</div><div class="place">会場：維新みらいふスタジアム 場外ステージ</div></div>
+    </div>
+    <div class="event">
+      <div class="badge">10/24<span class="m">土</span></div>
+      <div class="body"><div class="name"><a href="https://www.yamaguchi-machinaka.com/event0231/" target="_blank" rel="noopener" style="color:var(--navy);text-decoration:underline;font-weight:inherit;">第3回ブギウギ音食遊歩</a></div><div class="place">会場：山口市中心商店街</div></div>
+    </div>
+    <div class="event">
+      <div class="badge">10/24・25<span class="m">土・日</span></div>
+      <div class="body"><div class="name"><a href="https://www.city.yamaguchi.lg.jp/soshiki/23/182360.html" target="_blank" rel="noopener" style="color:var(--navy);text-decoration:underline;font-weight:inherit;">令和8年度山口市民文化祭</a></div><div class="place">会場：山口市民会館</div></div>
+    </div>
+    <div class="event">
+      <div class="badge">〜11月末</div>
+      <div class="body"><div class="name"><a href="http://www.tokusa-ringo.net" target="_blank" rel="noopener" style="color:var(--navy);text-decoration:underline;font-weight:inherit;">阿東りんご狩り 開園中</a></div><div class="place">会場：阿東徳佐</div></div>
     </div>
   </div>
 
@@ -353,7 +387,7 @@ footer{text-align:center;font-size:11px;color:#a89a78;margin-top:22px;}
     <div class="finish-box">
       <div>この画面を、山口市交通政策課の窓口で見せてね！</div>
       <button class="finish-stamp-btn" id="finishBtn">ここを押してね</button>
-      <p>職員が確認すると「がんばったね」スタンプが押せます。ちょっとしたプレゼントもあるよ♪</p>
+      <p>職員が確認すると「がんばったね」スタンプが押せます。ちょっとしたプレゼントもあるよ♪<br><span style="font-size:11px;font-weight:700;color:var(--navy);">スタンプは何個でも大丈夫！</span></p>
       <div class="finish-sub"><button id="finishResetBtn">解除する（要パスワード）</button></div>
     </div>
   </div>
@@ -370,16 +404,21 @@ footer{text-align:center;font-size:11px;color:#a89a78;margin-top:22px;}
     </div>
   </div>
 
-  <footer>山口市 交通政策課<br>市役所本庁舎3階（亀山町2番１号）</footer>
+  <footer>山口市公共交通委員会（事務局：山口市交通政策課）<br>市役所本庁舎3階（亀山町2番１号）</footer>
 </div>
 
 <script>
 const YEAR = 2026, MONTH = 10;
 const START = new Date(2026,9,1);
 const EVENTS = {
-  10: {label:'山口線トークショー'},
-  16: {label:'ポイント5倍'},
-  18: {label:'体験会/シェアサイクル'}
+  4:  ['子どもフェスタ'],
+  10: ['小椋佳「歌紡ぎの会」', '山口線トークショー'],
+  11: ['一直線まつり', 'BEER＆HARVEST', 'こどもパーク2026'],
+  16: ['ポイント5倍'],
+  17: ['大友良英展 17日~'],
+  18: ['運転士体験会', 'シェアサイクル'],
+  24: ['ブギウギ音食遊歩', '山口市民文化祭'],
+  25: ['山口市民文化祭'],
 };
 const STAMP_KEY = 'nomycar2026-stamps';
 const NAME_KEY = 'nomycar2026-name';
@@ -509,14 +548,18 @@ function buildCalendarGrid(){
   const today = new Date();
   const todayKey = dateKey(today.getFullYear(), today.getMonth()+1, today.getDate());
 
+  const HOLIDAYS = [12]; // 10/12 スポーツの日
+
   let html = '';
   for(let i=0;i<firstDow;i++){ html += `<div class="cal-cell blank"></div>`; }
   for(let d=1; d<=daysInMonth; d++){
     const dow = (firstDow + d - 1) % 7;
     const key = dateKey(YEAR,MONTH,d);
-    const dowClass = dow===0 ? 'sun' : (dow===6 ? 'sat' : '');
+    const isHoliday = HOLIDAYS.includes(d);
+    const dowClass = (dow===0 || isHoliday) ? 'sun' : (dow===6 ? 'sat' : '');
     const isToday = key === todayKey ? ' today' : '';
-    const ev = EVENTS[d] ? `<div class="tag">${EVENTS[d].label}</div>` : '';
+    const evList = EVENTS[d] || [];
+    const ev = evList.length ? `<div class="tags">${evList.map(t=>`<div class="tag">${t}</div>`).join('')}</div>` : '';
     const mark = stamped[key] ? `<div class="stampmark">${stampSVG()}</div>` : '';
     html += `<div class="cal-cell ${dowClass}${isToday}" data-key="${key}"><div class="d">${d}</div>${mark}${ev}</div>`;
   }
@@ -532,7 +575,7 @@ function computeStats(){
   let points = 0;
   keys.forEach(k=>{
     const day = parseInt(k.split('-')[2],10);
-    points += (day === 16) ? 5 : 1;
+    points += (day === 16) ? 15 : 3;
   });
   document.getElementById('statCount').textContent = count;
   document.getElementById('statPoints').textContent = points;
@@ -562,7 +605,7 @@ function toggleStamp(key, cellEl){
     const mark = document.createElement('div');
     mark.className = 'stampmark';
     mark.innerHTML = stampSVG();
-    const tagEl = cellEl.querySelector('.tag');
+    const tagEl = cellEl.querySelector('.tags');
     cellEl.insertBefore(mark, tagEl);
   }
   updateStampButton();
