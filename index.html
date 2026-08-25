@@ -526,7 +526,7 @@ function updateTrainProgress(count){
   const hintEl = document.getElementById('trainNextHint');
   if(count < 10){ hintEl.textContent = `あと${10-count}個でキハ187系に進化！`; }
   else if(count < 20){ hintEl.textContent = `あと${20-count}個でSLやまぐち号に進化！`; }
-  else if(count < TRAIN_MAX){ hintEl.textContent = `あと${TRAIN_MAX-count}個で終点・徳佐駅！`; }
+  else if(count < TRAIN_MAX){ hintEl.textContent = `あと${TRAIN_MAX-count}個で徳佐駅！`; }
   else { hintEl.textContent = '徳佐駅に到着！コンプリート！🎉'; }
   document.querySelectorAll('.station-dot').forEach(dot=>{
     const th = parseInt(dot.dataset.count, 10);
